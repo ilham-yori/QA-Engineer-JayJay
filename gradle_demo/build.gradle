@@ -1,0 +1,41 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+group = 'org.ilhamyp'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+
+    // 1. Use Guava in your implementation only:
+    implementation("com.google.guava:guava:33.5.0-jre")
+}
+
+test {
+    useJUnitPlatform()
+}
+
+application {
+    mainClass = "org.ilhamyp.Main"
+}
+
+task greetingsUser(){
+    description("Task for JayJay submission")
+    doLast {
+
+        if (project.hasProperty("username")){
+            String name = project.property("username");
+        }else{
+            String name = "Gradle User"
+        }
+
+        println("Hello, $name! Welcome to Gradle World!")
+    }
+}
