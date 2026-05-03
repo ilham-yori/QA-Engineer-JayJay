@@ -1,0 +1,58 @@
+plugins {
+    id 'java'
+    id 'io.qameta.allure' version '2.12.0'
+}
+
+group = 'org.ilhamyp'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+def allureVersion = "2.24.0"
+def aspectJVersion = "1.9.20.1"
+
+configurations {
+    agent {
+        canBeResolved = true
+        canBeConsumed = true
+    }
+}
+
+dependencies {
+
+    // Source: https://mvnrepository.com/artifact/org.testng/testng
+    testImplementation("org.testng:testng:7.11.0")
+
+    // Source: https://mvnrepository.com/artifact/io.rest-assured/rest-assured
+    testImplementation("io.rest-assured:rest-assured:6.0.0")
+
+    // Source: https://mvnrepository.com/artifact/org.json/json
+    implementation("org.json:json:20251224")
+
+    // Source: https://mvnrepository.com/artifact/org.slf4j/slf4j-simple
+    testImplementation("org.slf4j:slf4j-simple:2.0.17")
+
+    // Source: https://mvnrepository.com/artifact/io.rest-assured/json-schema-validator
+    implementation("io.rest-assured:json-schema-validator:5.5.6")
+
+    testImplementation platform("io.qameta.allure:allure-bom:$allureVersion")
+    testImplementation "io.qameta.allure:allure-testng"
+    testImplementation "io.qameta.allure:allure-rest-assured"
+
+    // Add aspectjweaver dependency
+    agent "org.aspectj:aspectjweaver:$aspectJVersion"
+
+}
+
+test {
+    useTestNG()
+
+    testLogging {
+        events "PASSED", "FAILED", "SKIPPED"
+    }
+
+    // Configure javaagent for test execution
+    jvmArgs = [ "-javaagent:${configurations.agent.singleFile}" ]
+}
