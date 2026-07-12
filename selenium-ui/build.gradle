@@ -1,0 +1,48 @@
+plugins {
+    id 'java'
+}
+
+group = 'org.ilhamyp'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation("org.seleniumhq.selenium:selenium-java:4.44.0")
+    testImplementation("io.github.bonigarcia:webdrivermanager:6.3.4")
+
+    implementation("io.cucumber:cucumber-java:7.34.3")
+    testImplementation("io.cucumber:cucumber-junit:7.34.3")
+
+    testImplementation platform('org.junit:junit-bom:6.0.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+/*test {
+    useJUnitPlatform()
+}*/
+
+configurations {
+    cucumberRuntime {
+        extendsFrom testImplementation
+    }
+}
+
+def tags= (findProperty('tags') == null) ? 'not @exclude' :  "${findProperty('tags')} and not @exclude"
+
+tasks.register('cucumber', JavaExec) {
+    description = "Running Cucumber Test"
+    dependsOn assemble, compileTestJava
+    mainClass = "io.cucumber.core.cli.Main"
+    classpath = configurations.cucumberRuntime + sourceSets.main.output + sourceSets.test.output
+    args = [
+            '--plugin', 'html:reports/test-report.html',
+            '--plugin', 'pretty',
+            '--glue', 'com.niken',
+            '--tags', "${tags}",
+            'src/test/resources'
+    ]
+}
