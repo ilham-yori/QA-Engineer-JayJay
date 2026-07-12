@@ -21,10 +21,6 @@ dependencies {
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
-/*test {
-    useJUnitPlatform()
-}*/
-
 configurations {
     cucumberRuntime {
         extendsFrom testImplementation
@@ -41,7 +37,7 @@ tasks.register('cucumber', JavaExec) {
     args = [
             '--plugin', 'html:reports/test-report.html',
             '--plugin', 'pretty',
-            '--glue', 'com.niken',
+            '--glue', 'com.ilhamyp',
             '--tags', "${tags}",
             'src/test/resources'
     ]
