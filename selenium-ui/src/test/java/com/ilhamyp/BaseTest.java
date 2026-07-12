@@ -11,10 +11,10 @@ public class BaseTest {
     protected static WebDriver driver;
 
     protected void getDriver() {
-        EdgeOptions options = new EdgeOptions();
+        ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless");
-        WebDriverManager.edgedriver().setup();
-        driver = new EdgeDriver(options);
+        WebDriverManager.chromedriver().setup();
+        driver = new ChromeDriver(options);
     }
 }
 
